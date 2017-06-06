@@ -17,13 +17,14 @@ case "$1" in
   docker build -t ${IMAGE_NAME} .
   ;;
 "start")
- docker run -d -it -v ${WORKSPACE_DIR}:/data/CastMatch -p 8001:8001 -p 20022:22 -p 3306:3306 --name ${CONTAINER_NAME} ${IMAGE_NAME} /bin/bash
+ docker run -d --privileged -it -v ${WORKSPACE_DIR}:/data/cast_match -p 8001:8001 -p 20022:22 -p 3306:3306 --name ${CONTAINER_NAME} ${IMAGE_NAME} /usr/sbin/init
  #docker run -d -it --name ${CONTAINER_NAME} ${IMAGE_NAME} /bin/bash
 
  docker start ${CONTAINER_NAME}
  ;;
 "attach")
-  docker attach ${CONTAINER_NAME}
+  docker exec -it ${CONTAINER_NAME} /bin/bash
+  #docker attach ${CONTAINER_NAME}
   ;;
 "stop")
   if [ $# -ge 3 ];
